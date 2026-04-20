@@ -57,24 +57,164 @@
     overflow-x:hidden;
   }
 
-  /* ============ CURTAIN INTRO ============ */
+  /* ==========================================================
+     CURTAIN INTRO - Real CSS curtains that slide apart
+     ========================================================== */
   #curtain-intro{
     position:fixed;inset:0;
     z-index:9999;
-    background:#1a0308 url('poster.jpg') center/cover no-repeat;
-    display:flex;align-items:center;justify-content:center;
-    transition:opacity 1.2s ease-out;
     overflow:hidden;
+    pointer-events:auto;
   }
-  #curtain-video{
+  #curtain-intro.gone{
+    pointer-events:none;
+  }
+
+  .stage-back{
     position:absolute;inset:0;
-    width:100%;height:100%;
-    object-fit:cover;
-    display:none;
+    background:
+      radial-gradient(ellipse at center, rgba(246,236,217,.15) 0%, rgba(0,0,0,.85) 60%, rgba(0,0,0,1) 100%);
     z-index:1;
+    opacity:1;
+    transition:opacity 1.4s ease-out;
   }
-  #curtain-video.playing{display:block}
-  #curtain-intro.gone{opacity:0;pointer-events:none}
+  #curtain-intro.opening .stage-back{
+    opacity:0;
+    transition-delay:1.8s;
+  }
+
+  /* ============== CURTAIN ROD ============== */
+  .curtain-rod{
+    position:absolute;top:0;left:-20px;right:-20px;height:22px;
+    background:
+      linear-gradient(180deg,
+        #f0d896 0%,
+        #d4a853 15%,
+        #8a6b2a 50%,
+        #6b4d1a 85%,
+        #4a3010 100%);
+    box-shadow:
+      0 6px 14px rgba(0,0,0,.6),
+      inset 0 1px 2px rgba(255,255,255,.4),
+      inset 0 -2px 4px rgba(0,0,0,.3);
+    z-index:4;
+  }
+  .curtain-rod::before,
+  .curtain-rod::after{
+    content:"";
+    position:absolute;top:-6px;
+    width:30px;height:30px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 35%, #f8e4a8, #c9a14a 45%, #6b4d1a 100%);
+    box-shadow:0 4px 10px rgba(0,0,0,.5), inset 0 1px 2px rgba(255,255,255,.6);
+  }
+  .curtain-rod::before{left:0}
+  .curtain-rod::after{right:0}
+
+  /* ============== CURTAIN PANELS ============== */
+  .curtain{
+    position:absolute;top:0;bottom:0;width:52%;
+    z-index:3;
+    transition:transform 3s cubic-bezier(.72,.02,.28,1);
+    will-change:transform;
+    background:
+      repeating-linear-gradient(90deg,
+        rgba(255,220,180,0) 0px,
+        rgba(255,220,180,0) 18px,
+        rgba(255,220,180,.06) 22px,
+        rgba(255,220,180,0) 26px
+      ),
+      repeating-linear-gradient(90deg,
+        rgba(0,0,0,.55) 0px,
+        rgba(0,0,0,.0) 8px,
+        rgba(0,0,0,.0) 32px,
+        rgba(0,0,0,.55) 40px
+      ),
+      repeating-linear-gradient(90deg,
+        rgba(139,16,32,.9) 0px,
+        rgba(107,15,26,.5) 20px,
+        rgba(74,8,18,.9) 40px
+      ),
+      linear-gradient(180deg,
+        #8b1020 0%,
+        #6b0f1a 35%,
+        #5a0d16 70%,
+        #3a0609 100%);
+    box-shadow:
+      inset 0 40px 60px rgba(0,0,0,.5),
+      inset 0 -30px 50px rgba(0,0,0,.6);
+  }
+
+  .curtain-left{
+    left:0;
+    background-position:0 0;
+    box-shadow:
+      inset -8px 0 24px rgba(0,0,0,.7),
+      inset 0 40px 60px rgba(0,0,0,.5),
+      inset 0 -30px 50px rgba(0,0,0,.6);
+  }
+  .curtain-left::after{
+    content:"";
+    position:absolute;top:22px;bottom:0;right:0;width:3px;
+    background:linear-gradient(180deg,
+      rgba(232,200,122,.4) 0%,
+      rgba(201,161,74,.2) 50%,
+      rgba(0,0,0,.4) 100%);
+  }
+
+  .curtain-right{
+    right:0;
+    box-shadow:
+      inset 8px 0 24px rgba(0,0,0,.7),
+      inset 0 40px 60px rgba(0,0,0,.5),
+      inset 0 -30px 50px rgba(0,0,0,.6);
+  }
+  .curtain-right::after{
+    content:"";
+    position:absolute;top:22px;bottom:0;left:0;width:3px;
+    background:linear-gradient(180deg,
+      rgba(232,200,122,.4) 0%,
+      rgba(201,161,74,.2) 50%,
+      rgba(0,0,0,.4) 100%);
+  }
+
+  /* Pelmet (gold valance at top) */
+  .pelmet{
+    position:absolute;top:22px;left:0;right:0;height:48px;
+    z-index:3;
+    background:
+      linear-gradient(180deg,
+        rgba(201,161,74,.85) 0%,
+        rgba(138,107,42,.7) 50%,
+        rgba(74,48,16,.6) 90%,
+        transparent 100%);
+    pointer-events:none;
+  }
+  .pelmet::after{
+    content:"";
+    position:absolute;bottom:-8px;left:0;right:0;height:14px;
+    background:
+      radial-gradient(circle at 10% 0, var(--gold-dark) 6px, transparent 7px),
+      radial-gradient(circle at 30% 0, var(--gold-dark) 6px, transparent 7px),
+      radial-gradient(circle at 50% 0, var(--gold-dark) 6px, transparent 7px),
+      radial-gradient(circle at 70% 0, var(--gold-dark) 6px, transparent 7px),
+      radial-gradient(circle at 90% 0, var(--gold-dark) 6px, transparent 7px);
+    background-size:20% 100%;
+    background-repeat:repeat-x;
+  }
+
+  /* ============ OPENING STATE ============ */
+  #curtain-intro.opening .curtain-left{
+    transform:translateX(-102%);
+  }
+  #curtain-intro.opening .curtain-right{
+    transform:translateX(102%);
+  }
+  #curtain-intro.opening .curtain-rod,
+  #curtain-intro.opening .pelmet{
+    opacity:0;
+    transition:opacity .8s ease-out 2.3s;
+  }
 
   /* Landing overlay - shown before user taps */
   .landing-overlay{
@@ -83,12 +223,12 @@
     align-items:center;justify-content:center;
     padding:24px;
     text-align:center;
-    z-index:3;
-    background:radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, rgba(0,0,0,.45) 100%);
+    z-index:10;
+    background:radial-gradient(ellipse at center, rgba(0,0,0,.15) 0%, rgba(0,0,0,.55) 100%);
     transition:opacity .6s ease, transform .6s ease;
   }
   .landing-overlay.hidden{
-    opacity:0;pointer-events:none;transform:scale(1.1);
+    opacity:0;pointer-events:none;transform:scale(1.08);
   }
 
   .landing-monogram{
@@ -103,6 +243,7 @@
       inset 0 2px 6px rgba(255,255,255,.7);
     margin-bottom:28px;
     animation:glow 2.5s ease-in-out infinite alternate;
+    position:relative;
   }
   .landing-monogram::before{
     content:"";
@@ -191,15 +332,12 @@
 
   /* ============ MAIN INVITATION ============ */
   .invitation{
-    opacity:0;
-    transition:opacity 1.2s ease-in;
     background:
       radial-gradient(ellipse at 20% 10%, rgba(201,161,74,.08), transparent 50%),
       radial-gradient(ellipse at 80% 90%, rgba(107,15,26,.08), transparent 50%),
       var(--cream);
     position:relative;
   }
-  .invitation.visible{opacity:1}
 
   /* Paper texture overlay */
   .invitation::before{
@@ -240,7 +378,7 @@
     display:flex;flex-direction:column;
     align-items:center;justify-content:center;
     text-align:center;
-    padding:80px 24px 60px;
+    padding:80px 24px 100px;
     background:
       radial-gradient(ellipse at center, rgba(255,255,255,.3) 0%, transparent 70%),
       var(--cream);
@@ -267,7 +405,6 @@
     box-shadow:
       0 4px 20px rgba(107,15,26,.2),
       inset 0 1px 3px rgba(255,255,255,.6);
-    animation:fadeInScale 1.2s .2s both;
   }
   .monogram::before{
     content:"";
@@ -290,8 +427,6 @@
     color:var(--maroon-deep);
     letter-spacing:.5px;
     margin-bottom:22px;
-    opacity:0;
-    animation:fadeUp 1.1s .5s forwards;
   }
 
   .intro-text{
@@ -302,14 +437,10 @@
     max-width:320px;
     margin:0 auto 32px;
     font-weight:400;
-    opacity:0;
-    animation:fadeUp 1.1s .7s forwards;
   }
 
   .names-wrap{
     margin:18px 0 14px;
-    opacity:0;
-    animation:fadeUp 1.2s 1s forwards;
   }
   .name{
     font-family:'Allura',cursive;
@@ -342,8 +473,6 @@
     color:var(--maroon-deep);
     letter-spacing:.5px;
     margin-top:10px;
-    opacity:0;
-    animation:fadeUp 1.1s 1.2s forwards;
     position:relative;
     padding:0 16px;
   }
@@ -362,21 +491,18 @@
     font-size:15px;
     color:var(--gold-dark);
     margin-top:22px;
-    opacity:0;
-    animation:fadeUp 1.1s 1.4s forwards;
   }
 
   .scroll-cue{
     position:absolute;
-    bottom:10px;left:50%;transform:translateX(-50%);
+    bottom:28px;left:0;right:0;
     color:var(--gold-dark);
     font-family:'Marcellus',serif;
     font-size:11px;
     letter-spacing:4px;
     text-transform:uppercase;
-    opacity:0;
-    animation:fadeUp 1s 1.8s forwards, bounce 2s 2.5s ease-in-out infinite;
     text-align:center;
+    display:flex;flex-direction:column;align-items:center;
   }
   .scroll-cue::after{
     content:"";
@@ -389,14 +515,21 @@
     0%,100%{transform:translate(-50%,0)}
     50%{transform:translate(-50%,6px)}
   }
-  @keyframes fadeInScale{
-    from{opacity:0;transform:scale(.8)}
-    to{opacity:1;transform:scale(1)}
-  }
   @keyframes fadeUp{
     from{opacity:0;transform:translateY(20px)}
     to{opacity:1;transform:translateY(0)}
   }
+
+  /* Cover intro animation - plays once after curtains open */
+  .cover-anim > *{opacity:0;animation:fadeUp 1s forwards}
+  .cover-anim .monogram{animation-delay:.1s}
+  .cover-anim .invocation{animation-delay:.35s}
+  .cover-anim .intro-text{animation-delay:.55s}
+  .cover-anim .names-wrap{animation-delay:.75s}
+  .cover-anim .parents-line{animation-delay:.9s}
+  .cover-anim .ornament{animation-delay:1s}
+  .cover-anim .tagline{animation-delay:1.15s}
+  .cover-anim .scroll-cue{animation-delay:1.4s}
 
   /* ============ BLESSINGS / FAMILY ============ */
   #blessings{
@@ -434,45 +567,6 @@
   }
   .card::before{top:8px;left:8px;border-right:none;border-bottom:none}
   .card::after{bottom:8px;right:8px;border-left:none;border-top:none}
-
-  .verse{
-    font-family:'Cormorant Garamond',serif;
-    font-style:italic;
-    font-size:16.5px;
-    line-height:1.75;
-    color:var(--maroon-deep);
-    margin-bottom:24px;
-  }
-  .blessings-label{
-    font-family:'Marcellus',serif;
-    font-size:13px;
-    letter-spacing:3px;
-    text-transform:uppercase;
-    color:var(--gold-dark);
-    margin-bottom:8px;
-  }
-  .ancestors{
-    font-family:'Cormorant Garamond',serif;
-    font-weight:600;
-    font-size:17px;
-    color:var(--maroon);
-    margin-bottom:22px;
-  }
-  .parents{
-    font-family:'Cormorant Garamond',serif;
-    font-weight:600;
-    font-size:19px;
-    color:var(--maroon);
-    letter-spacing:.3px;
-    margin-bottom:10px;
-  }
-  .request{
-    font-family:'Cormorant Garamond',serif;
-    font-size:15.5px;
-    color:var(--ink);
-    line-height:1.6;
-    margin-bottom:22px;
-  }
 
   .couple-card-names{
     margin:18px 0;
@@ -800,25 +894,11 @@
   <svg id="musicIconOff" viewBox="0 0 24 24" style="display:none"><path d="M12 3v3.17L14 8.17V7h4V3h-6zM4.27 3L3 4.27l9 9v.28A4 4 0 1 0 14 17v-1.73L19.73 21 21 19.73 4.27 3z"/></svg>
 </button>
 
-<!-- ============ CURTAIN INTRO ============ -->
-<div id="curtain-intro">
-  <video id="curtain-video" muted playsinline preload="auto" poster="poster.jpg">
-    <source src="curtain.mp4" type="video/mp4">
-  </video>
-
-  <div class="landing-overlay" id="landingOverlay">
-    <div class="landing-monogram"><span>A&amp;S</span></div>
-    <div class="landing-invited">~ You are cordially invited ~</div>
-    <div class="landing-names">Abhishek &amp; Shipra</div>
-    <button class="tap-btn" id="openBtn" type="button">Tap to Open</button>
-  </div>
-</div>
-
-<!-- ============ MAIN INVITATION ============ -->
+<!-- ============ MAIN INVITATION (rendered FIRST, behind curtains) ============ -->
 <main class="invitation" id="invitation">
 
   <!-- Cover -->
-  <section id="cover">
+  <section id="cover" class="cover-anim">
     <!-- Floral corner decorations -->
     <svg class="corner-deco tl" viewBox="0 0 100 100" fill="none">
       <path d="M5 5 Q 40 5, 60 25 T 95 50" stroke="#c9a14a" stroke-width="1.2" fill="none"/>
@@ -862,35 +942,7 @@
 
     <p class="parents-line">S/o Smt. Usha &amp; Sh. Jiwan Modi</p>
 
-    <div class="ornament">
-      <span class="line"></span>
-      <span class="dot">❖</span>
-      <span class="line"></span>
-    </div>
-
-    <p class="tagline">5<sup>th</sup> May 2026 · Zirakpur</p>
-
     <div class="scroll-cue">Scroll</div>
-  </section>
-
-  <!-- Blessings & Family -->
-  <section id="blessings">
-    <div class="card reveal-on-scroll">
-      <div class="section-title">With Blessings</div>
-      <div class="ornament">
-        <span class="line"></span>
-        <span class="dot">❀</span>
-        <span class="line"></span>
-      </div>
-
-      <div class="couple-card-names">
-        <div class="name">Abhishek</div>
-        <span class="weds">with</span>
-        <div class="name bride">Shipra</div>
-      </div>
-
-      <p class="bride-parents">S/o Smt. Usha &amp; Sh. Jiwan Modi</p>
-    </div>
   </section>
 
   <!-- Scratch Reveal -->
@@ -975,66 +1027,72 @@
 
 </main>
 
+<!-- ============ CURTAIN INTRO (on top, covers invitation, slides off to reveal) ============ -->
+<div id="curtain-intro">
+  <!-- Dark backdrop -->
+  <div class="stage-back"></div>
+
+  <!-- The two curtain panels -->
+  <div class="curtain curtain-left"></div>
+  <div class="curtain curtain-right"></div>
+
+  <!-- Decorative gold rod at top -->
+  <div class="curtain-rod"></div>
+  <div class="pelmet"></div>
+
+  <!-- Landing overlay (sits on top) -->
+  <div class="landing-overlay" id="landingOverlay">
+    <div class="landing-monogram"><span>A&amp;S</span></div>
+    <div class="landing-invited">~ You are cordially invited ~</div>
+    <div class="landing-names">Abhishek &amp; Shipra</div>
+    <button class="tap-btn" id="openBtn" type="button">Tap to Open</button>
+  </div>
+</div>
+
 <script>
   /* ============ CURTAIN INTRO HANDLING ============ */
-  const intro   = document.getElementById('curtain-intro');
-  const video   = document.getElementById('curtain-video');
-  const invite  = document.getElementById('invitation');
-  const overlay = document.getElementById('landingOverlay');
-  const openBtn = document.getElementById('openBtn');
-  const song    = document.getElementById('weddingSong');
+  const intro    = document.getElementById('curtain-intro');
+  const overlay  = document.getElementById('landingOverlay');
+  const openBtn  = document.getElementById('openBtn');
+  const song     = document.getElementById('weddingSong');
   const musicBtn = document.getElementById('musicToggle');
   const musicIconOn  = document.getElementById('musicIconOn');
   const musicIconOff = document.getElementById('musicIconOff');
 
   // lock scroll until curtains open
-  document.body.style.overflow='hidden';
-
-  let revealed = false;
-  function revealInvite(){
-    if(revealed) return;
-    revealed = true;
-    intro.classList.add('gone');
-    invite.classList.add('visible');
-    musicBtn.classList.add('visible');
-    document.body.style.overflow='auto';
-    setTimeout(()=>{ intro.remove(); }, 1300);
-  }
+  document.body.style.overflow = 'hidden';
 
   let started = false;
   function startCurtain(){
     if(started) return;
     started = true;
 
-    // Start the wedding song on user tap (user interaction = autoplay allowed)
+    // Play wedding song on user tap
     song.volume = 0.55;
     const songPromise = song.play();
     if(songPromise && songPromise.catch){
-      songPromise.catch(()=>{ /* browser blocked — music button still works */ });
+      songPromise.catch(()=>{});
     }
 
     // Hide the landing overlay
     overlay.classList.add('hidden');
-    // Show and play the video at 2.8x speed → curtains open in ~1.8s
-    video.classList.add('playing');
-    video.playbackRate = 2.8;
-    const p = video.play();
-    if(p && p.catch){
-      p.catch(()=>{
-        // If playback fails, reveal invitation directly
-        setTimeout(revealInvite, 500);
-      });
-    }
-    // AUTO-REVEAL the invitation once curtains are visually open (1.8s)
-    setTimeout(revealInvite, 1800);
+
+    // Trigger the curtain slide animation
+    intro.classList.add('opening');
+    intro.classList.add('gone');
+
+    // Show music toggle
+    musicBtn.classList.add('visible');
+
+    // Unlock scroll as the curtains start moving
+    setTimeout(()=>{ document.body.style.overflow = 'auto'; }, 1200);
+
+    // After curtains finish sliding, remove from DOM
+    setTimeout(()=>{ intro.remove(); }, 3500);
   }
 
-  // Open on tap
   openBtn.addEventListener('click', startCurtain);
   openBtn.addEventListener('touchend', (e)=>{ e.preventDefault(); startCurtain(); }, {passive:false});
-
-  // Also fire reveal if the video ends early (in case of short video or browser quirk)
-  video.addEventListener('ended', revealInvite);
 
   /* ============ MUSIC TOGGLE ============ */
   musicBtn.addEventListener('click', ()=>{
@@ -1062,7 +1120,6 @@
     canvas.height = rect.height * window.devicePixelRatio;
     ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
 
-    // gold gradient surface
     const g = ctx.createLinearGradient(0, 0, rect.width, rect.height);
     g.addColorStop(0,   '#e8c87a');
     g.addColorStop(.3,  '#c9a14a');
@@ -1072,7 +1129,6 @@
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, rect.width, rect.height);
 
-    // subtle pattern
     ctx.fillStyle = 'rgba(255,245,200,.25)';
     for(let i=0;i<30;i++){
       ctx.beginPath();
@@ -1080,7 +1136,6 @@
       ctx.fill();
     }
 
-    // hint text "SCRATCH HERE"
     ctx.fillStyle = 'rgba(74,8,18,.7)';
     ctx.font = "600 16px 'Marcellus', serif";
     ctx.textAlign = 'center';
@@ -1115,7 +1170,6 @@
     scratchPct = cleared / total;
     if(scratchPct > 0.45 && !scratched){
       scratched = true;
-      // clear everything smoothly
       canvas.style.transition = 'opacity .8s';
       canvas.style.opacity = '0';
       setTimeout(()=>{ canvas.remove(); }, 900);
